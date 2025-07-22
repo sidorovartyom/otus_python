@@ -8,13 +8,15 @@ class SqlAlchemyProductRepository(ProductRepository):
     def __init__(self, session: Session):
         self.session=session
 
-    def add(self, product:Product):
+    def add(self, product: Product):
         product_orm = ProductORM(
             name=product.name,
             quantity=product.quantity,
             price=product.price,
         )
         self.session.add(product_orm)
+        self.session.flush()  # Получаем id
+        product.id = product_orm.id
 
     def get(self, product_id: int)->Product:
         product_orm= self.session.query(ProductORM).filter_by(id=product_id).one()
@@ -36,13 +38,15 @@ class SqlAlchemyOrderRepository(OrderRepository):
     def __init__(self, session: Session):
         self.session=session
 
-    def add(self, order:Order):
+    def add(self, order: Order):
         order_orm = OrderORM()
         order_orm.products = [
             self.session.query(ProductORM).filter_by(id=p.id).one()
             for p in order.products
         ]
         self.session.add(order_orm)
+        self.session.flush()  # Получаем id
+        order.id = order_orm.id
 
     def get(self, order_id: int)->Order:
         order_orm= self.session.query(OrderORM).filter_by(id=order_id).one()
