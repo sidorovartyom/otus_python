@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  log-analyzer:
+    build: .
+    container_name: log-analyzer
+    volumes:
+      # Монтируем директории для логов и отчетов
+      - ./log:/app/log:ro
+      - ./reports:/app/reports
+      # Монтируем конфигурацию (опционально)
+      - ./config.json:/app/config.json:ro
+    environment:
+      # Переменные окружения для настройки
+      - PYTHONUNBUFFERED=1
+      - TZ=Europe/Moscow
+    restart: unless-stopped
+    # Команда по умолчанию (можно переопределить)
+    command: ["python", "-m", "log_analyzer"]
+    
+  # Сервис для периодического запуска анализатора
+  log-analyzer-cron:
+    build: .
+    container_name: log-analyzer-cron
+    volumes:
+      - ./log:/app/log:ro
+      - ./reports:/app/reports
+      - ./config.json:/app/config.json:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TZ=Europe/Moscow
+    restart: unless-stopped
+    # Запуск каждый час
+    command: >
+      sh -c "
+        while true; do
+          python -m log_analyzer;
+          echo 'Waiting 1 hour before next run...';
+          sleep 3600;
+        done
+      "
+
+volumes:
+  reports:
+    driver: local 
