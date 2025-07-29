@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестовый HTTP сервер</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #333; }
+        .test-link { display: block; margin: 10px 0; padding: 10px; background: #f0f0f0; text-decoration: none; color: #333; }
+        .test-link:hover { background: #e0e0e0; }
+    </style>
+</head>
+<body>
+    <h1>🚀 HTTP Server Test Suite</h1>
+    <p>Добро пожаловать на тестовый HTTP сервер!</p>
+    
+    <h2>Тестовые ссылки:</h2>
+    <a href="/test.html" class="test-link">📄 Тестовая страница</a>
+    <a href="/css/style.css" class="test-link">🎨 CSS файл</a>
+    <a href="/js/script.js" class="test-link">⚡ JavaScript файл</a>
+    <a href="/images/" class="test-link">🖼️ Директория с изображениями</a>
+    <a href="/httptest/" class="test-link">🧪 Тесты (будут скопированы из test-suite)</a>
+    
+    <h2>Тесты URL декодирования:</h2>
+    <a href="/test%20file.html" class="test-link">📄 Файл с пробелом в имени</a>
+    <a href="/русский.html" class="test-link">🇷🇺 Файл с русскими символами</a>
+    
+    <h2>Тесты безопасности:</h2>
+    <a href="/../etc/passwd" class="test-link">❌ Попытка выйти за пределы (403)</a>
+    <a href="/nonexistent.html" class="test-link">❌ Несуществующий файл (404)</a>
+    
+    <p><strong>Сервер запущен:</strong> <span id="datetime"></span></p>
+    
+    <script>
+        document.getElementById('datetime').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html> 
