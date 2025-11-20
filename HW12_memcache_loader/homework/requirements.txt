@@ -1,0 +1,4 @@
+protobuf==3.20.3
+python-memcached>=1.59
+pytest>=7.0.0
+pytest-cov>=4.0.0
