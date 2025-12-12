@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # Airflow PostgreSQL (for demo/testing)
+  airflow-db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - airflow-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
+
+  # Streamlit Dashboard (optional - can run locally)
+  # Uncomment to run dashboard in Docker
+  # dashboard:
+  #   build: .
+  #   command: streamlit run airflow_monitor/dashboard/app.py
+  #   ports:
+  #     - "8501:8501"
+  #   environment:
+  #     - AIRFLOW_DB_URL=postgresql://airflow:airflow@airflow-db:5432/airflow
+  #   depends_on:
+  #     - airflow-db
+  #   volumes:
+  #     - ./airflow_monitor.db:/app/airflow_monitor.db
+
+volumes:
+  airflow-db-data:
